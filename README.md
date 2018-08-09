@@ -1,2 +1,3 @@
-# Markdown-Previewer
-Renders github flavored markdown
+#Markdown previewer
+
+Renders github-styled markdown as you write it
