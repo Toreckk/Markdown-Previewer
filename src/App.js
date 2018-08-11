@@ -7,19 +7,24 @@ marked.setOptions({
   sanitize: true,
 });
 
+const renderer = new marked.Renderer();
+renderer.link = function (href, title, text) {
+  return `<a target="_blank" href="${href}">${text}` + '</a>';
+}
+
 class App extends Component {
   constructor(props){
     super(props);
       this.state = {
         rawInput:initialValue,
-        markdown:marked(initialValue),
+        // markdown:marked(initialValue),
     }
   }
   handleChange(e){
     let newValue = e.target.value;
     this.setState({
       rawInput: newValue,
-      markdown: marked(newValue.replace("\\n","\n")),
+      // markdown: marked(newValue.replace("\\n","\n")),
     });
   }
   render() {
@@ -28,10 +33,10 @@ class App extends Component {
      
       <div id="container">
           <div id = "markdown" className="flex-content">
-              <textarea onChange={this.handleChange.bind(this)} value={this.state.rawInput}></textarea>
+              <textarea onChange={this.handleChange.bind(this)} value={this.state.rawInput} id="editor"></textarea>
           </div>
-          <div id = "preview" className="flex-content" dangerouslySetInnerHTML = {{__html:this.state.markdown}}>
-            
+          <div id = "previewWindow" className="flex-content" >
+            <span id = "preview" dangerouslySetInnerHTML = {{__html:marked(this.state.rawInput, { renderer: renderer })}}></span>
           </div>
       </div>
 
